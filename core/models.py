@@ -7,6 +7,7 @@ from django.contrib.auth.models import (
     AbstractUser,
     BaseUserManager
 )
+from django.conf import settings
 
 class UserManager(BaseUserManager):
     """create user"""
@@ -37,3 +38,16 @@ class User(AbstractUser):
     objects = UserManager()
 
     REQUIRED_FIELDS = []
+
+class UserToken(models.Model):
+    user = models.IntegerField()
+    token = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expired_at = models.DateTimeField(default=settings.TOKEN_EXPIRES)
+
+class Reset(models.Model):
+    email = models.CharField(max_length=255)
+    token = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.email

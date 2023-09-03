@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -140,3 +141,13 @@ REST_FRAMEWORK = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+TOKEN_EXPIRES = datetime.datetime.utcnow() + datetime.timedelta(days=7)
+
+# EMAIL_HOST = '0.0.0.0'
+# EMAIL_PORT = 1025
+
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '5dc1d5f4704d6f'
+EMAIL_HOST_PASSWORD = 'a1165ea7d15f58'
+EMAIL_PORT = '2525'

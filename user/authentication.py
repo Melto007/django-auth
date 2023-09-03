@@ -4,6 +4,7 @@ from rest_framework.authentication import (
     get_authorization_header
 )
 from django.contrib.auth import get_user_model
+from rest_framework import exceptions
 
 class JWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
@@ -17,13 +18,13 @@ class JWTAuthentication(BaseAuthentication):
 
             return {user, None}
 
-        raise ValueError('Unauthenticated')
+        raise exceptions.AuthenticationFailed('Unauthenticated')
 
 def create_access_token(id):
     return jwt.encode(
         {
         'user_id': id,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30),
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30),
         'iat': datetime.datetime.utcnow()
         },
         'access_secret',
@@ -36,7 +37,7 @@ def decode_access_token(token):
 
         return payload['user_id']
     except:
-        raise ValueError('Unauthenticated')
+        raise exceptions.AuthenticationFailed('Unauthenticated')
 
 def create_refresh_token(id):
     return jwt.encode(
@@ -55,4 +56,4 @@ def decode_refresh_token(token):
 
         return payload['user_id']
     except:
-        raise ValueError('Unauthenticated')
+        raise exceptions.AuthenticationFailed('Unauthenticated')
